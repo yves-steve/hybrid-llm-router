@@ -1,0 +1,55 @@
+name: hybrid-cloud-infra-agent
+description: Hybrid agent that can route prompts to local or cloud LLM providers for infra and architecture tasks.
+version: 0.2.0
+
+routing:
+  mode: auto
+  local_provider: local
+  cloud_fallback: openai
+  sensitive_local_only: true
+  keyword_cloud_routes:
+    - deploy
+    - terraform
+    - bicep
+    - entra
+    - aws
+    - gcp
+    - azure
+    - production
+
+capabilities:
+  - infra-planning
+  - deployment-guidance
+  - identity-and-access-architecture
+  - readme-and-setup-generation
+
+security:
+  public_repo_ready: true
+  prohibit_secret_in_prompts: true
+  prohibit_secret_in_examples: true
+  require_placeholders_for_sensitive_values: true
+  blocked_patterns:
+    - client_secret
+    - private_key
+    - access_token
+    - refresh_token
+    - tenant_id
+    - certificate
+  allowed_placeholder_examples:
+    - TENANT_ID_PLACEHOLDER
+    - CLIENT_ID_PLACEHOLDER
+    - SUBSCRIPTION_ID_PLACEHOLDER
+
+threat_model:
+  primary_risks:
+    - secret_exfiltration_via_cloud_prompt
+    - accidental_commit_of_credentials
+    - tenant_identifier_leakage
+  mitigations:
+    - force_local_for_sensitive_prompts
+    - use_github_secrets_for_ci
+    - block_.env_and_local_profiles_from_git
+
+defaults:
+  response_style: concise
+  include_checklists: true

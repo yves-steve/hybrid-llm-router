@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+
+# Local secrets and machine-specific config
+.env
+.env.*
+!.env.example
+config/hardware_profile.json
+
+# OS files
+.DS_Store
